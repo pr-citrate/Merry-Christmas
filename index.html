@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .terminal {
+            display: block;
+            white-space: pre;
+            font-size: 18px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .merry {
+            font-size: 24px;
+            color: #0ff;
+            opacity: 0;
+            animation: fade-in 2s forwards;
+            animation-delay: 4s;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal" id="terminal"></div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+
+        const treeLines = [
+            '          *          ',
+            '         ***         ',
+            '        *****        ',
+            '       *******       ',
+            '      *********      ',
+            '     ***********     ',
+            '    *************    ',
+            '          ||          ',
+        ];
+
+        let currentLine = 0;
+        let currentChar = 0;
+        let treeBuilt = false;
+
+        const drawTreeLine = () => {
+            if (currentLine < treeLines.length) {
+                const line = treeLines[currentLine];
+                if (!terminal.children[currentLine]) {
+                    const div = document.createElement('div');
+                    div.textContent = '';
+                    terminal.appendChild(div);
+                }
+                const currentDiv = terminal.children[currentLine];
+
+                if (currentChar < line.length) {
+                    currentDiv.textContent += line[currentChar];
+                    currentChar++;
+                    setTimeout(drawTreeLine, 50);
+                } else {
+                    currentLine++;
+                    currentChar = 0;
+                    setTimeout(drawTreeLine, 200);
+                }
+            } else if (!treeBuilt) {
+                treeBuilt = true;
+                setTimeout(showMerryChristmas, 1000);
+            }
+        }
+
+        const showMerryChristmas = () => {
+            const merryDiv = document.createElement('div');
+            merryDiv.className = 'merry';
+            merryDiv.textContent = '🎄 Merry Christmas! 🎄';
+            terminal.appendChild(merryDiv);
+        }
+
+        drawTreeLine();
+    </script>
+</body>
+</html>
